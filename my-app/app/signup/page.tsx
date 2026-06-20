@@ -12,7 +12,7 @@ export default function SignupPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const [showPassword, setShowPassword] = useState(false);
+  const [showPassword, setShowPassword] = useState(true);
   const [error, setError] = useState("");
     const [loading, setLoading] = useState(false);
     const [weak, setWeak] = useState(true);
@@ -100,12 +100,12 @@ export default function SignupPage() {
       setError("Server error. Try again.");
     } finally {
         setLoading(false);
-        router.push("/welcome");
+        router.push("/login");
     }
   };
 
   return (
-    <div className="min-h-screen w-full bg-white md:flex">
+    <div className="min-h-screen w-full bg-white flex items-center">
 
       {/* MOBILE GLOW */}
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(0,200,82,0.10),transparent_60%)] md:hidden" />

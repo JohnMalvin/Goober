@@ -12,16 +12,15 @@ export default function LoginPage() {
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const [clicks, setClicks] = useState(0);
+  const [buttonPos, setButtonPos] = useState({ left: "50%", top: "80%" });
 
   const goToSignup = () => {
     router.push("/signup");
   };
 
-  const handleLogin = async () => {
+  const runLogin = async () => {
     try {
-      setLoading(true);
-      setError(""); // clear old error
-
       const res = await fetch("/api/login", {
         method: "POST",
         headers: {
@@ -41,8 +40,7 @@ export default function LoginPage() {
         localStorage.setItem("token", data.token);
       }
 
-      router.push("/welcome");
-
+      router.push("/order");
     } catch {
       setError("idk broo, something went wrong");
     } finally {
@@ -50,8 +48,31 @@ export default function LoginPage() {
     }
   };
 
+  const randomPosition = () => {
+    const min = 10;
+    const max = 90;
+    const left = Math.floor(Math.random() * (max - min + 1)) + min;
+    const top = Math.floor(Math.random() * (max - min + 1)) + min;
+    return { left: `${left}%`, top: `${top}%` };
+  };
+
+  const handleLogin = async () => {
+    if (loading) return;
+
+    setError("");
+
+    if (clicks < 6) {
+      setClicks((prev) => prev + 1);
+      setButtonPos(randomPosition());
+      return;
+    }
+
+    setLoading(true);
+    await runLogin();
+  };
+
   return (
-    <div className="min-h-screen w-full bg-white md:flex">
+    <div className="min-h-[95vh] min-w-screen bg-white md:flex items-center justify-center flex">
 
       {/* MOBILE */}
       <div className="relative w-full flex flex-col justify-center px-6 py-12 md:w-1/2">
@@ -92,19 +113,16 @@ export default function LoginPage() {
           <button
             onClick={handleLogin}
             disabled={loading}
-            className="w-full py-3 bg-black text-white text-sm rounded-md
-            hover:bg-[#00C852] hover:text-black transition font-medium"
+            className="hidden"
           >
-            {loading ? "Signing in..." : "Continue"}
+            Continue
           </button>
 
-          {/* 🔴 ERROR MESSAGE */}
           {error && (
             <p className="text-sm text-red-500 mt-2">
               {error}
             </p>
           )}
-
         </div>
 
         {/* links */}
@@ -128,6 +146,21 @@ export default function LoginPage() {
         </div>
       </div>
 
+      <button
+        onClick={handleLogin}
+        disabled={loading}
+        style={{
+          position: "fixed",
+          left: buttonPos.left,
+          top: buttonPos.top,
+          transform: "translate(-50%, -50%)",
+        }}
+        className={`z-50 px-5 py-3 bg-black text-white text-sm rounded-full shadow-2xl transition duration-200 ${
+          loading ? "cursor-wait opacity-70" : "hover:bg-[#00C852] hover:text-black w-[40vw] mt-10"
+        }`}
+      >
+        {loading ? "Signing in..." : clicks < 1 ? 'Login' : clicks < 2 ? `Oopsieee` : clicks < 3 ? 'Sike' : clicks < 4 ? 'Surely this time' : clicks < 5 ? 'Try harder bro' : clicks < 6 ? 'Just click it man' : 'Skill Issue'}
+      </button>
     </div>
   );
 }

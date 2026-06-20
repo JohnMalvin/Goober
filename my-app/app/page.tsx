@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { apiRequest } from "@/lib/api";
+import Link from "next/link";
 
 export default function Page() {
   const [getMsg, setGetMsg] = useState("");
@@ -40,24 +41,16 @@ export default function Page() {
   };
 
   return (
-    <div className="p-10 space-y-6">
-      {/* GET result */}
-      <h1 className="text-2xl font-bold">
-        GET: {getMsg}
-      </h1>
-
-      {/* POST button */}
-      <button
-        onClick={sendPost}
-        className="px-4 py-2 bg-blue-600 text-white rounded"
-      >
-        Send POST
-      </button>
-
-      {/* POST result */}
-      <p className="text-lg">
-        POST: {postMsg}
-      </p>
+    <div className="min-h-screen w-[30vw] flex items-center justify-center bg-gradient-to-r from-purple-400 to-pink-500">
+        <div className="bg-white p-10 rounded-lg shadow-lg text-center">
+          <h1 className="text-4xl font-bold mb-4">Welcome to Goober!</h1>
+        <div className="flex flex-row justify-between">
+          <div/>
+          <Link href="/login">Login</Link>
+          <Link href="/signup">Sign Up</Link>
+          <div/>
+        </div>
+      </div>
     </div>
   );
 }
