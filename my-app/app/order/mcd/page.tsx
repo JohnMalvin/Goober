@@ -214,7 +214,8 @@ export default function OrderMcdPage() {
     const [orderMessage, setOrderMessage] = useState("");
   
     const [loading, setLoading] = useState(false);
-    
+    localStorage.setItem("stars", "5");
+
     const router = useRouter();
 
     useEffect(() => {
@@ -338,7 +339,7 @@ export default function OrderMcdPage() {
 
         <Link
                 href="/"
-          className="w-full bg-black text-white font-bold py-4 rounded-2xl text-center block"
+          className="w-full bg-gray-600 text-white font-bold py-4 rounded-2xl text-center block"
             >
           {orderMessage || `Processing your order... ${countdown !== null ? countdown : ""}`}
             </Link>
