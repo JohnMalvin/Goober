@@ -40,7 +40,7 @@ export default function LoginPage() {
         localStorage.setItem("token", data.token);
       }
 
-      router.push("/welcome");
+      router.push("/order");
     } catch {
       setError("idk broo, something went wrong");
     } finally {
