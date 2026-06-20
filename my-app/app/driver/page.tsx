@@ -8,6 +8,7 @@ import { Types } from "ably";
 
 // Import the driver profile image
 import AlexImage from "../../public/mockup.jpg";
+import NoobMasterImage from "../../public/mockup.jpg";
 
 interface DriverRequest {
     requestId: string;
@@ -180,7 +181,7 @@ export default function DriverDashboard() {
                 <div className="relative mb-4 mt-2">
                     <div className="w-24 h-24 rounded-full p-1 bg-white ring-4 ring-green-500 overflow-hidden flex items-center justify-center">
                         <Image
-                            src={AlexImage}
+                            src={name === 'Alex'? AlexImage : NoobMasterImage"}
                             alt="Avatar"
                             width={96}
                             height={96}
