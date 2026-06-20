@@ -9,7 +9,7 @@ const ORIGIN = "26.5351,-80.0742";       // McDonald's Boynton Beach
 const DESTINATION = "26.7554,-80.0642";  // 1234 Ocean Dr, Boynton Beach
 
 const MOCK_DRIVER = {
-  name: "Mohammed",
+  name: "Alex",
   plate: "BQ22WN",
   vehicle: "Toyota RAV4",
   rating: 93,
