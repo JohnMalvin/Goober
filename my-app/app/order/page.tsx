@@ -18,6 +18,12 @@ import {
   Heart,
 } from "lucide-react";
 import mockup from "../../public/mockup.jpg";
+import mcd from "@/public/mcd.png";
+import hj from "@/public/hungjack.png";
+import kfc from "@/public/kfc.png";
+import sub from "../../public/sub.png";
+import dom from "../../public/dom.png";
+import gyg from "../../public/gyg.png";
 
 const CATEGORIES = [
   { id: "pickup", label: "Pickup", emoji: "🛍️" },
@@ -38,6 +44,7 @@ const RESTAURANTS = [
     time: "10–20 min",
     fee: "$0 delivery fee",
     promo: "2 for $5 Mix & Match",
+    img: mcd,
   },
   {
     id: "burger-king",
@@ -48,6 +55,7 @@ const RESTAURANTS = [
     time: "15–25 min",
     fee: "$0 delivery fee",
     promo: null,
+    img: hj,
   },
   {
     id: "subway",
@@ -58,6 +66,7 @@ const RESTAURANTS = [
     time: "20–30 min",
     fee: "$1.49 delivery fee",
     promo: "Buy 2 get 1 free",
+    img: sub,
   },
   {
     id: "kfc",
@@ -68,6 +77,7 @@ const RESTAURANTS = [
     time: "15–25 min",
     fee: "$0 delivery fee",
     promo: null,
+    img: kfc,
   },
   {
     id: "dominos",
@@ -78,6 +88,7 @@ const RESTAURANTS = [
     time: "25–35 min",
     fee: "$0 delivery fee",
     promo: "50% off large pizzas",
+    img: dom,
   },
   {
     id: "guzman",
@@ -88,6 +99,7 @@ const RESTAURANTS = [
     time: "10–20 min",
     fee: "$1.99 delivery fee",
     promo: null,
+    img: gyg,
   },
 ];
 
@@ -163,7 +175,7 @@ export default function HomePage() {
       <section className="px-4 mt-5">
         <div className="relative rounded-2xl overflow-hidden bg-[#F5A623] h-40">
           <Image
-            src={mockup}
+            src = {mockup}
             alt="Promotion"
             fill
             className="object-cover opacity-30"
@@ -238,13 +250,14 @@ export default function HomePage() {
         </div>
 
         <div className="flex flex-col gap-5">
-          {RESTAURANTS.map((r) => (
+          {RESTAURANTS.map((r, key) => (
             <Link key={r.id} href={`/order/${r.slug}`} className="block">
               <article className="group cursor-pointer">
                 {/* Image */}
                 <div className="relative h-48 rounded-2xl overflow-hidden bg-gray-200">
                   <Image
-                    src={mockup}
+                    key={key}
+                    src={r.img}
                     alt={r.name}
                     fill
                     className="object-cover group-hover:scale-105 transition-transform duration-300"
