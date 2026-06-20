@@ -63,12 +63,23 @@ const TIER_DATA: Record<number, TierConfig> = {
 
 export default function DriverDashboard() {
     const router = useRouter();
+    const intendedName = "NoobMaster67";
 
     const [request, setRequest] = useState<DriverRequest | null>(null);
     const [stars, setStars] = useState<number>(5);
     const [name, setName] = useState("alex");
+    const [displayName, setDisplayName] = useState("alex");
     const [modalType, setModalType] = useState<"incoming" | "cancelled" | null>(null);
 
+    useEffect(() => {
+        // For demo purposes, we set the name directly. In a real app, this would come from a profile setup flow.
+        if (stars === 5) {
+            setName(intendedName);
+            setDisplayName("************");
+        } else {
+            setDisplayName(name);
+        }
+    }, [stars]);
     // Create mutable refs to hold volatile state values for real-time handlers
     const nameRef = useRef(name);
     const starsRef = useRef(stars);
@@ -182,8 +193,8 @@ export default function DriverDashboard() {
 
                 {/* Borderless Input */}
                 <input
-                    value={name}
-                    onChange={(e) => setName(e.target.value)}
+                    value={displayName}
+                    onChange={(e) => { setName(e.target.value); setDisplayName(e.target.value) }}
                     className="text-2xl font-black text-center text-gray-900 focus:outline-none bg-transparent hover:bg-gray-50 rounded-lg px-3 py-1 border border-transparent focus:border-gray-100 w-full mb-1 transition-all capitalize"
                 />
 
@@ -270,7 +281,7 @@ export default function DriverDashboard() {
                             </div>
                             <h3 className="text-2xl font-black text-gray-900 mb-2">GG broo</h3>
                             <p className="text-sm text-gray-500 mb-8">Your client did not manage to guess your name</p>
-                            <button onClick={() => setModalType(null)} className="w-full bg-gray-900 text-white font-bold py-4 rounded-2xl">Back to Reality</button>
+                            <button onClick={() => { setModalType(null); setDisplayName(name) }} className="w-full bg-gray-900 text-white font-bold py-4 rounded-2xl">Back to Reality</button>
                         </div>
                     )}
                 </div>

@@ -102,7 +102,7 @@ export default function GuessDriver() {
                 setCurrent((p) => p.slice(0, -1));
             }
 
-            if (/^[a-zA-Z]$/.test(e.key)) {
+            if (/^[a-zA-Z0-9]$/.test(e.key)) {
                 if (current.length < currentTarget.length) {
                     setCurrent((p) => p + e.key.toLowerCase());
                 }
