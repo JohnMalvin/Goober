@@ -1,12 +1,13 @@
 "use client";
 
+import { ably } from "@/lib/ably";
 import { useEffect, useState } from "react";
 
 // ─── Constants ────────────────────────────────────────────────────────────────
 const GOOGLE_API_KEY = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY || "";
 
-const ORIGIN = "26.5351,-80.0742";       // McDonald's Boynton Beach
-const DESTINATION = "26.7554,-80.0642";  // 1234 Ocean Dr, Boynton Beach
+
+
 
 const MOCK_USER = {
   name: "Alex",
@@ -14,6 +15,13 @@ const MOCK_USER = {
   location: "860 W Industrial Ave, Boynton",
   rating: 93,
 };
+
+const address = localStorage.getItem('address');
+if (address) {
+  // const parsed = JSON.parse(address);
+  // origin = `${parsed.user.lat},${parsed.user.lng}`;
+  // destination = `${parsed.mine.lat},${parsed.mine.lng}`;
+}
 
 // ─── Component ────────────────────────────────────────────────────────────────
 export default function UberTracker() {
@@ -23,9 +31,110 @@ export default function UberTracker() {
   const [distText, setDistText] = useState<string | null>(null);
   const [arrivalTime, setArrivalTime] = useState<string | null>(null);
   const [showNotif, setShowNotif] = useState(false);
+
+  const WRONG_CLIENT = "-34.4278,150.8931"; // Redfern
+  const WRONG_DRIVER = "-33.9167,151.2417"; // Randwick
+  const CLIENT = "-33.9171,151.2313"; // MCIC (UNSW)
+  const DRIVER = "-33.8790,151.2065"; // Haymarket
+
+  const [origin, setOrigin] = useState(DRIVER);       // McDonald's Boynton Beach
+  const [destination, setDestination] = useState(CLIENT);
+  
   // Build the embed iframe URL (Directions mode, driving)
   // Only constructed client-side (inside useEffect) so SSR never writes it
   const [mapSrc, setMapSrc] = useState("");
+
+  
+  // // lidsten change data
+  // useEffect(() => {
+  //   const channel = ably.channels.get("my-channel");
+
+  //   const handler = (message: any) => {
+  //     console.log("Received changeData:", message.data);
+  //     setDestination(message.data.wrongClient);
+
+  //   };
+
+  //   channel.subscribe("changeData", handler);
+
+  //   return () => {
+  //     channel.unsubscribe("changeData", handler);
+  //   };
+  // }, []);
+  // // lidsten change data
+  // useEffect(() => {
+  //   const channel = ably.channels.get("my-channel-driver");
+
+  //   const handler = (message: any) => {
+  //     console.log("Received changeData:", message.data);
+  //     setDestination(message.data.wrongClient);
+
+  //   };
+
+  //   channel.subscribe("changeDataDriver", handler);
+
+  //   return () => {
+  //     channel.unsubscribe("changeDataDriver", handler);
+  //   };
+  // }, []);
+
+  // useEffect(() => {
+  //   const channel = ably.channels.get("my-channel");
+
+  //   const handler = (message: any) => {
+  //     console.log("Received full payload:", message.data);
+
+  //     const { wrongClient } = message.data || {};
+
+  //     if (!wrongClient) {
+  //       console.warn("Missing wrongClient:", message.data);
+  //       return;
+  //     }
+
+  //     setDestination(wrongClient);
+  //   };
+
+  //   channel.subscribe("changeData", handler);
+
+  //   return () => {
+  //     channel.unsubscribe("changeData", handler);
+  //   };
+  // }, []);
+
+  useEffect(() => {
+    const channel = ably.channels.get("my-channel");
+
+    const handler = (message: any) => {
+      console.log("Received payload:", message.data);
+
+      const wrongClient = message.data?.wrongClient;
+
+      if (!wrongClient) {
+        console.warn("wrongClient missing:", message.data);
+        return;
+      }
+
+      setDestination(wrongClient);
+    };
+
+    channel.subscribe("changeData", handler);
+
+    return () => {
+      channel.unsubscribe("changeData", handler);
+    };
+  }, []);
+  // send change data
+  async function sendChangeData() {
+    const channel = ably.channels.get("my-channel");
+
+    await channel.publish("changeData", {
+      id: 123,
+      status: "updated",
+      timestamp: Date.now(),
+    });
+
+    console.log("changeData sent");
+  }
 
   useEffect(() => {
     // Mark as mounted — now safe to render any client-only content
@@ -35,14 +144,14 @@ export default function UberTracker() {
     // Build map src client-side only
     if (GOOGLE_API_KEY) {
       setMapSrc(
-        `https://www.google.com/maps/embed/v1/directions?key=${GOOGLE_API_KEY}&origin=${ORIGIN}&destination=${DESTINATION}&mode=driving`
+        `https://www.google.com/maps/embed/v1/directions?key=${GOOGLE_API_KEY}&origin=${origin}&destination=${destination}&mode=driving`
       );
     }
 
     // Fetch ETA via /api/eta (server-side route keeps key hidden)
     async function fetchETA() {
       try {
-        const url = `/api/eta?origin=${ORIGIN}&destination=${DESTINATION}`;
+        const url = `/api/eta?origin=${origin}&destination=${destination}`;
         const res = await fetch(url);
         const data = await res.json();
 
@@ -77,7 +186,7 @@ export default function UberTracker() {
     }
 
     fetchETA();
-  }, []);
+  }, [origin, destination]);
 
   return (
     <div className="mx-auto max-w-[390px] min-h-[780px] bg-white font-sans overflow-hidden shadow-xl border border-gray-100">
