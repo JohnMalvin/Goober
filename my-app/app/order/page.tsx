@@ -47,6 +47,17 @@ const RESTAURANTS = [
     img: mcd,
   },
   {
+    id: "kfc",
+    slug: "kfc",
+    name: "KFC",
+    tag: "Chicken · American",
+    rating: 4.6,
+    time: "15–25 min",
+    fee: "$0 delivery fee",
+    promo: null,
+    img: kfc,
+  },
+  {
     id: "burger-king",
     slug: "burger-king",
     name: "Burger King",
@@ -68,17 +79,7 @@ const RESTAURANTS = [
     promo: "Buy 2 get 1 free",
     img: sub,
   },
-  {
-    id: "kfc",
-    slug: "kfc",
-    name: "KFC",
-    tag: "Chicken · American",
-    rating: 4.6,
-    time: "15–25 min",
-    fee: "$0 delivery fee",
-    promo: null,
-    img: kfc,
-  },
+  
   {
     id: "dominos",
     slug: "dominos",

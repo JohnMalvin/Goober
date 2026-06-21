@@ -28,11 +28,11 @@ export default function UberTracker() {
   // Build the embed iframe URL (Directions mode, driving)
   // Only constructed client-side (inside useEffect) so SSR never writes it
   const [mapSrc, setMapSrc] = useState("");
-  const WRONG_CLIENT = "-34.4278,150.8931"; // Redfern
-  const WRONG_DRIVER = "-33.9167,151.2417"; // Randwick
+  const WRONG_CLIENT = "-34.4285248,150.8999716"; // Wollongong
+  const WRONG_DRIVER = "-33.9187883,151.2361087"; // Randwick
 
-  const CLIENT = "-33.9171,151.2313"; // MCIC (UNSW)
-  const DRIVER = "-33.8790,151.2065"; // Haymarket
+  const CLIENT = "-33.9164237,151.2259332"; // MCIC (UNSW)
+  const DRIVER = "-33.8811113,151.2019139"; // Haymarket
 
   const [origin, setorigin] = useState(DRIVER);       // McDonald's Boynton Beach
   const [destination, setdestination] = useState(CLIENT);
