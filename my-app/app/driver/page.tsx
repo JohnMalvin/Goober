@@ -7,8 +7,8 @@ import { ably } from "@/lib/ably";
 import { Types } from "ably";
 
 // Import the driver profile image
-import AlexImage from "../../public/mockup.jpg";
-import NoobMasterImage from "../../public/mockup.jpg";
+import AlexImage from "@/public/driver1.svg";
+import NoobMasterImage from "@/public/driver2.svg";
 
 interface DriverRequest {
     requestId: string;

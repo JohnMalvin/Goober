@@ -3,7 +3,7 @@
 import Image from "next/image";
 import { useEffect, useState, useRef } from "react";
 import { useRouter } from "next/navigation";
-import avatar from "../../public/mockup.jpg";
+import avatar from "@/public/av.svg";
 import { ably } from "@/lib/ably";
 
 export default function ProfilePage() {
@@ -12,8 +12,8 @@ export default function ProfilePage() {
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
   const [user] = useState({
-    name: "Nina",
-    location: "Sydney, NSW",
+    name: "Bob",
+    location: "Wollongong, NSW",
   });
 
   const ongoingOrder = {

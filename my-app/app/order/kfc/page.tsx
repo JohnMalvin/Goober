@@ -14,8 +14,11 @@ import {
   ChevronRight,
   Check,
 } from "lucide-react";
-import hero from "../../../public/kfc.png";
-import mockup from "../../../public/mockup.jpg";
+import hero from "@/public/kfc.png";
+import pc from "@/public/pc.png";
+import mockup from "@/public/mockup.jpg";
+import bucket from "@/public/bucket.png";
+import cs from "@/public/cs.png";
 import { useRouter } from "next/navigation";
 
 // ─── RESTAURANT ───────────────────────────────────────────────────────────────
@@ -52,7 +55,7 @@ const MENU: MenuItem[] = [
     description: "Eight pieces of KFC's Original Recipe chicken — crispy, juicy, and hand-breaded.",
     price: 19.99,
     category: "Featured",
-    image: mockup,
+    image: bucket,
     popular: true,
     calories: "2400 cal",
   },
@@ -62,7 +65,7 @@ const MENU: MenuItem[] = [
     description: "Crispy chicken fillet with pickles and mayo on a toasted brioche bun.",
     price: 6.99,
     category: "Featured",
-    image: mockup,
+    image: cs,
     popular: true,
     calories: "560 cal",
   },
@@ -72,7 +75,7 @@ const MENU: MenuItem[] = [
     description: "Bite-sized pieces of seasoned, crispy chicken — perfect for sharing.",
     price: 4.99,
     category: "Featured",
-    image: mockup,
+    image: pc,
     calories: "320 cal",
   },
 
