@@ -16,7 +16,7 @@ export default function LoginPage() {
   const [buttonPos, setButtonPos] = useState({ left: "50%", top: "80%" });
 
   const goToSignup = () => {
-    router.push("/signup");
+    router.push("/");
   };
 
   const runLogin = async () => {

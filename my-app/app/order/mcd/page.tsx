@@ -14,6 +14,10 @@ import {
   ChevronRight,
   Check,
 } from "lucide-react";
+import hero from "../../../public/mcd.png";
+import qp from "../../../public/qp.png";
+import dc from "../../../public/dc.png";
+import bm from "../../../public/bm.png";
 import mockup from "../../../public/mockup.jpg";
 import { useRouter } from "next/navigation";
 
@@ -27,7 +31,7 @@ const RESTAURANT = {
   time: "10–20 min",
   fee: "$0 delivery fee",
   minOrder: "$10.00",
-  heroImage: mockup,         // swap with: import heroImg from "./mcd-hero.jpg"
+  heroImage: hero,         // swap with: import heroImg from "./mcd-hero.jpg"
 };
 
 // ─── MENU DATA ────────────────────────────────────────────────────────────────
@@ -51,27 +55,27 @@ const MENU: MenuItem[] = [
     description: "Two beef patties, special sauce, lettuce, cheese, pickles, onions on a sesame seed bun.",
     price: 7.49,
     category: "Featured",
-    image: mockup,            // swap → import bigMacImg from "./images/big-mac.jpg"
+    image: bm,            // swap → import bigMacImg from "./images/big-mac.jpg"
     popular: true,
     calories: "550 cal",
   },
   {
     id: "qpc",
-    name: "Quarter Pounder with Cheese",
+    name: "Quarter Pounder",
     description: "Fresh beef patty, two slices of cheese, onions, pickles, mustard and ketchup.",
     price: 8.29,
     category: "Featured",
-    image: mockup,            // swap → import qpcImg from "./images/quarter-pounder.jpg"
+    image: qp,            // swap → import qpcImg from "./images/quarter-pounder.jpg"
     popular: true,
     calories: "530 cal",
   },
   {
     id: "mcdbl",
-    name: "McDouble",
+    name: "Double Cheese Burger",
     description: "Two beef patties, one slice of cheese, pickles, onions, mustard and ketchup.",
     price: 4.49,
     category: "Featured",
-    image: mockup,            // swap → import mcdblImg from "./images/mcdouble.jpg"
+    image: dc,            // swap → import mcdblImg from "./images/mcdouble.jpg"
     calories: "400 cal",
   },
 
