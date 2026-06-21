@@ -131,7 +131,7 @@ export default function HomePage() {
         <div className="flex items-center gap-2">
           <button className="flex items-center gap-1.5 bg-gray-100 rounded-full px-3 py-2 text-sm font-semibold flex-1">
             <MapPin size={14} className="text-black" />
-            <span className="truncate">UNSW</span>
+            <span className="truncate">MCIC</span>
             <ChevronDown size={14} className="ml-auto shrink-0" />
           </button>
 

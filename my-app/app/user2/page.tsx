@@ -17,17 +17,35 @@ export default function ProfilePage() {
   });
 
   const ongoingOrder = {
-    status: "On the way",
-    eta: "12 days",
-    driver: "Not Alex",
-    plate: "NSW-4821",
-    restaurant: "Guzman Y Gomez",
+    status: "Preparing your order",
+    eta: "08 days",
+    driver: "Not Not Alex",
+    plate: "NSW-7395",
+    restaurant: "KFC",
   };
 
   const history = [
-    { id: 1, restaurant: "Ramen Ichiraku", name: "Spicy Ramen", date: "Yesterday", price: "$12.90" },
-    { id: 2, restaurant: "Formosa Café", name: "Chicken Rice Bowl", date: "2 days ago", price: "$10.50" },
-    { id: 3, restaurant: "Corner Pizza", name: "Pizza Slice Pack", date: "Last week", price: "$18.00" },
+    {
+      id: 1,
+      restaurant: "Hakata Gensuke",
+      name: "Tonkotsu Ramen",
+      date: "Yesterday",
+      price: "$16.90",
+    },
+    {
+      id: 2,
+      restaurant: "Chatime",
+      name: "Brown Sugar Milk Tea + Pearls",
+      date: "2 days ago",
+      price: "$7.80",
+    },
+    {
+      id: 3,
+      restaurant: "Domino's Pizza",
+      name: "Meat Lovers Pizza",
+      date: "Last week",
+      price: "$21.50",
+    },
   ];
 
   useEffect(() => {
@@ -83,7 +101,7 @@ export default function ProfilePage() {
       audioRef.current.pause();
       audioRef.current.currentTime = 0; // Resets the track back to the beginning
     }
-    router.push("/geoguesser");
+    router.push("/geoguesser2");
   };
 
   return (

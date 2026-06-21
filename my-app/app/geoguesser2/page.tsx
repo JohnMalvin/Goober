@@ -3,8 +3,8 @@
 import { useEffect, useRef, useState } from "react";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
-import markerGuess from "../../public/file.svg";
-import markerActual from "../../public/globe.svg";
+import markerGuess from "../../public/bluepin.svg";
+import markerActual from "../../public/redpin.svg";
 import { ably } from "@/lib/ably";
 
 const guessIcon = L.icon({

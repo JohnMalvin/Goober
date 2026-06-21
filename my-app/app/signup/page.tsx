@@ -14,67 +14,66 @@ export default function SignupPage() {
 
   const [showPassword, setShowPassword] = useState(true);
   const [error, setError] = useState("");
-    const [loading, setLoading] = useState(false);
-    const [weak, setWeak] = useState(true);
+  const [loading, setLoading] = useState(false);
+  const [weak, setWeak] = useState(true);
 
-    
-    const validateGooberPassword = (password: string) => {
-
+  const validateGooberPassword = (password: string) => {
     if (!/[A-Z]/.test(password)) {
-        setError("Must include uppercase letter");
-        return false;
+      setError("Must include uppercase letter");
+      return false;
     }
 
     if (!/[a-z]/.test(password)) {
-        setError("Must include lowercase letter");
-        return false;
+      setError("Must include lowercase letter");
+      return false;
     }
 
     if (!/\d/.test(password)) {
-    setError("Password must include number");
-    return false;
+      setError("Password must include number");
+      return false;
     }
-        
+
     if (password.length < 14) {
-        setError("Password must be at least 14 characters");
-        return false;
+      setError("Password must be at least 14 characters");
+      return false;
     }
 
     const digits = password.match(/\d/g)?.map(Number) || [];
 
     if (digits.length < 3) {
-        setError("Must include at least 3 digits");
-        return false;
+      setError("Must include at least 3 digits");
+      return false;
     }
 
     const isDescending = digits.every((d, i) => {
-        return i === 0 || digits[i - 1] >= d;
+      return i === 0 || digits[i - 1] >= d;
     });
 
     if (digits.length >= 2 && !isDescending) {
-        setError("Digits must be in descending order");
-        return false;
+      setError("Digits must be in descending order");
+      return false;
     }
-    
+
     const symbols = password.match(/[^a-zA-Z0-9]/g) || [];
-    
+
     if (symbols.length < 2) {
-        setError("Must include at least 2 symbols");
-        return false;
+      setError("Must include at least 2 symbols");
+      return false;
     }
-    
+
     if (weak) {
-        setError("ur password too weak broo, think harder");
-        setWeak(false); // next time it will pass if it meets the criteria
-        return false;
-    } 
+      setError("ur password too weak broo, think harder");
+      setWeak(false);
+      return false;
+    }
 
     return true;
-    };
-    const handleSignup = async () => {
-      const res = validateGooberPassword(password);
+  };
 
-      if (!res) return;
+  const handleSignup = async () => {
+    const res = validateGooberPassword(password);
+    if (!res) return;
+
     try {
       setLoading(true);
       setError("");
@@ -95,26 +94,21 @@ export default function SignupPage() {
       }
 
       router.push("/login");
-
     } catch {
       setError("Server error. Try again.");
     } finally {
-        setLoading(false);
-        router.push("/login");
+      setLoading(false);
+      router.push("/login");
     }
   };
 
   return (
-    <div className="min-h-screen w-full bg-white flex items-center">
+    <div className="min-h-screen w-full bg-white flex items-center justify-center px-6">
+      
+      <div className="w-full max-w-md">
 
-      {/* MOBILE GLOW */}
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(0,200,82,0.10),transparent_60%)] md:hidden" />
-
-      {/* LEFT */}
-      <div className="relative w-full flex flex-col justify-center px-6 py-12 md:w-1/2">
-
-        {/* title */}
-        <div className="mb-8">
+        {/* HEADER */}
+        <div className="mb-8 text-center">
           <h1 className="text-2xl font-medium text-black">
             Create account
           </h1>
@@ -123,10 +117,10 @@ export default function SignupPage() {
             Join the delayed food experience
           </p>
 
-          <div className="w-10 h-[2px] bg-[#00C852] mt-3 rounded-full" />
+          <div className="w-10 h-[2px] bg-[#00C852] mt-3 rounded-full mx-auto" />
         </div>
 
-        {/* form */}
+        {/* FORM */}
         <div className="space-y-3">
 
           <input
@@ -145,7 +139,6 @@ export default function SignupPage() {
             className="w-full px-4 py-3 text-sm border border-black/10 rounded-md"
           />
 
-          {/* PASSWORD FIELD WITH EYE ICON */}
           <div className="relative">
             <input
               type={showPassword ? "text" : "password"}
@@ -164,7 +157,6 @@ export default function SignupPage() {
             </button>
           </div>
 
-          {/* ERROR MESSAGE (ONLY ONE) */}
           {error && (
             <div className="text-sm text-red-500">
               {error}
@@ -179,10 +171,9 @@ export default function SignupPage() {
           >
             {loading ? "Creating..." : "Create account"}
           </button>
-
         </div>
 
-        {/* login link */}
+        {/* FOOTER LINKS */}
         <div className="text-center mt-4 text-[11px] text-black/40">
           Already have an account?{" "}
           <a href="/login" className="text-black hover:text-[#00C852] font-medium">
@@ -190,37 +181,11 @@ export default function SignupPage() {
           </a>
         </div>
 
-        {/* footer */}
         <div className="mt-10 text-center text-[10px] text-black/25">
           By continuing, you accept our Terms and emotional delivery conditions
         </div>
+
       </div>
-
-      {/* RIGHT PANEL */}
-      <div className="hidden md:flex w-1/2 items-center justify-center bg-[#0a0a0a] text-white relative overflow-hidden">
-
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(0,200,82,0.18),transparent_60%)]" />
-
-        <div className="relative text-center max-w-xs">
-
-          <Image
-            src={logo}
-            alt="logo"
-            width={44}
-            height={44}
-            className="invert mx-auto mb-6 opacity-90"
-          />
-
-          <h2 className="text-2xl font-medium leading-snug">
-            Start ordering<br />bad decisions.
-          </h2>
-
-          <p className="text-white/40 text-sm mt-4">
-            Fast sign up. Slow delivery.
-          </p>
-        </div>
-      </div>
-
     </div>
   );
 }

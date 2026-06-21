@@ -141,14 +141,7 @@ export default function UberTracker() {
   return (
     <div className="mx-auto max-w-[390px] min-h-[780px] bg-white font-sans overflow-hidden shadow-xl border border-gray-100">
 
-      {/* Top Bar */}
-      <div className="flex items-center justify-between px-5 py-4 bg-white">
-        <button className="w-9 h-9 rounded-full bg-gray-100 flex items-center justify-center text-gray-800">✕</button>
-        <div className="flex gap-2.5">
-          <button className="h-8 rounded-full bg-gray-100 px-3.5 text-xs font-medium text-gray-800">↑ Share</button>
-          <button className="h-8 rounded-full bg-gray-100 px-3.5 text-xs font-medium text-gray-800">Help</button>
-        </div>
-      </div>
+
 
       {/* Heading */}
       <div className="px-5 pb-4 bg-white">
