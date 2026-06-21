@@ -5,6 +5,7 @@ import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 import markerGuess from "../../public/file.svg";
 import markerActual from "../../public/globe.svg";
+import { ably } from "@/lib/ably";
 
 const guessIcon = L.icon({
   iconUrl: markerGuess.src,
@@ -58,6 +59,65 @@ export default function GeoGuessrLite() {
     guessLng: number;
   } | null>(null);
 
+
+ async function sendChangeData({
+  guessLat,
+  guessLng,
+  wrongClient,
+}: {
+  guessLat: number;
+  guessLng: number;
+  wrongClient: string;
+}) {
+  const channel = ably.channels.get("my-channel");
+
+  await sendChangeDriverData({
+    guessLat,
+    guessLng,
+    wrongClient,
+  });
+
+    await channel.publish("changeData", {
+      id: 123,
+      status: "updated",
+      timestamp: Date.now(),
+      guessLat,
+      guessLng,
+      wrongClient,
+    });
+  }
+
+  async function sendChangeDriverData({
+    guessLat,
+    guessLng,
+    wrongClient,
+  }: {
+    guessLat: number;
+    guessLng: number;
+    wrongClient: string;
+  }) {
+    const channel = ably.channels.get("my-channel-driver");
+
+    await channel.publish("changeData", {
+      id: 123,
+      status: "updated",
+      timestamp: Date.now(),
+      guessLat,
+      guessLng,
+      wrongClient,
+    });
+
+    await channel.publish("changeDriverData", {
+      id: 123,
+      status: "updated",
+      timestamp: Date.now(),
+      guessLat,
+      guessLng,
+      wrongClient,
+    });
+
+    console.log("changeData sent");
+  }
   function calculateDistance(
     lat1: number,
     lon1: number,
@@ -128,7 +188,7 @@ export default function GeoGuessrLite() {
         [START_LOCATION.lat, START_LOCATION.lng],
         6
     );
-
+    sendChangeData({guessLat: guess.lat, guessLng: guess.lng, wrongClient: WRONG_CLIENT})
     // 👇 delay popup
     setTimeout(() => {
         setResult({

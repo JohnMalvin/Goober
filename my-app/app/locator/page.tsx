@@ -21,6 +21,17 @@ export default function LocatorPage() {
       })
     );
 
+    localStorage.setItem('address', 
+      JSON.stringify({
+        mine: {
+          lat: selected.lat,
+          lng: selected.lng,
+          address: selected.address,
+        },
+        driver: null
+      }
+    ));
+
     router.push('/order');
   };
 

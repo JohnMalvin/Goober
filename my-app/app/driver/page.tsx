@@ -18,6 +18,10 @@ interface DriverRequest {
 interface DeliveryConfirmedPayload {
     driverName: string;
     status: string;
+    userLocation?: { mine: {
+        lat: number;
+        lng: number;
+    }};
 }
 
 interface TierConfig {
@@ -72,6 +76,7 @@ export default function DriverDashboard() {
     const [displayName, setDisplayName] = useState("alex");
     const [modalType, setModalType] = useState<"incoming" | "cancelled" | null>(null);
 
+    
     useEffect(() => {
         // For demo purposes, we set the name directly. In a real app, this would come from a profile setup flow.
         if (stars === 5) {
@@ -130,6 +135,18 @@ export default function DriverDashboard() {
             if (data.driverName.toLowerCase().trim() === currentDriverName) {
                 if (data.status === "accepted") {
                     router.push("/activeDelivery");
+
+                    let myAddress = localStorage.getItem("address");
+                    if (myAddress) {
+                        try {
+                            const parsedAddress = JSON.parse(myAddress);
+                            parsedAddress.user = data?.userLocation?.mine
+                            localStorage.setItem("address", JSON.stringify(parsedAddress));
+                        } catch (e) {
+                            console.error("Failed to parse address", e);
+                        }
+                    }
+                    
                 } else if (data.status === "failed") {
                     setRequest(null);
                     setModalType("cancelled");
@@ -148,9 +165,14 @@ export default function DriverDashboard() {
     // ----------------------------------------------------------------
     const acceptDelivery = () => {
         if (!request) return;
+        let myLocation = localStorage.getItem("address");
+        if (myLocation) {
+            myLocation = JSON.parse(myLocation).mine;
+        }
         ably.channels.get("online").publish("acceptDelivery", {
             requestId: request.requestId,
             driverName: name.toLowerCase().trim(),
+            location: myLocation,
         });
         setRequest(null);
         setModalType(null);
@@ -181,7 +203,7 @@ export default function DriverDashboard() {
                 <div className="relative mb-4 mt-2">
                     <div className="w-24 h-24 rounded-full p-1 bg-white ring-4 ring-green-500 overflow-hidden flex items-center justify-center">
                         <Image
-                            src={name === 'Alex'? AlexImage : NoobMasterImage"}
+                            src={name === 'Alex'? AlexImage : NoobMasterImage}
                             alt="Avatar"
                             width={96}
                             height={96}

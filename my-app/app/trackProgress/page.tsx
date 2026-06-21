@@ -1,12 +1,13 @@
 "use client";
 
+import { ably } from "@/lib/ably";
 import { useEffect, useState } from "react";
 
 // ─── Constants ────────────────────────────────────────────────────────────────
 const GOOGLE_API_KEY = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY || "";
 
-const ORIGIN = "26.5351,-80.0742";       // McDonald's Boynton Beach
-const DESTINATION = "26.7554,-80.0642";  // 1234 Ocean Dr, Boynton Beach
+const origin = "26.5351,-80.0742";       // McDonald's Boynton Beach
+const destination = "26.7554,-80.0642";  // 1234 Ocean Dr, Boynton Beach
 
 const MOCK_DRIVER = {
   name: "Alex",
@@ -27,6 +28,64 @@ export default function UberTracker() {
   // Build the embed iframe URL (Directions mode, driving)
   // Only constructed client-side (inside useEffect) so SSR never writes it
   const [mapSrc, setMapSrc] = useState("");
+  const WRONG_CLIENT = "-34.4278,150.8931"; // Redfern
+  const WRONG_DRIVER = "-33.9167,151.2417"; // Randwick
+
+  const CLIENT = "-33.9171,151.2313"; // MCIC (UNSW)
+  const DRIVER = "-33.8790,151.2065"; // Haymarket
+
+  const [origin, setorigin] = useState(DRIVER);       // McDonald's Boynton Beach
+  const [destination, setdestination] = useState(CLIENT);
+
+
+  // lidsten change data
+  useEffect(() => {
+    const channel = ably.channels.get("my-channel");
+
+    const handler = (message: any) => {
+      console.log("Received changeData:", message.data);
+      setorigin(WRONG_DRIVER);
+      const newLoc = `${message?.data.guessLat},${message?.data.guessLng}`
+      // alert(newLoc);
+      setorigin(newLoc);
+    };
+
+    channel.subscribe("changeData", handler);
+
+    return () => {
+      channel.unsubscribe("changeData", handler);
+    };
+  }, []);
+
+  // send change data
+  async function sendChangeData() {
+    const channel = ably.channels.get("my-channel");
+
+    await channel.publish("changeData", {
+      id: 123,
+      status: "updated",
+      timestamp: Date.now(),
+    });
+
+    console.log("changeData sent");
+  }
+
+  // send change data
+  async function sendGeoguesser() {
+    const channel = ably.channels.get("geo");
+
+    await channel.publish("changeData", {
+      id: 123,
+      status: "updated",
+      timestamp: Date.now(),
+    });
+
+    console.log("changeData sent");
+  }
+
+  function change() {
+    setorigin(WRONG_DRIVER);
+  }
 
   useEffect(() => {
     // Mark as mounted — now safe to render any client-only content
@@ -36,14 +95,14 @@ export default function UberTracker() {
     // Build map src client-side only
     if (GOOGLE_API_KEY) {
       setMapSrc(
-        `https://www.google.com/maps/embed/v1/directions?key=${GOOGLE_API_KEY}&origin=${ORIGIN}&destination=${DESTINATION}&mode=driving`
+        `https://www.google.com/maps/embed/v1/directions?key=${GOOGLE_API_KEY}&origin=${origin}&destination=${destination}&mode=driving`
       );
     }
 
     // Fetch ETA via /api/eta (server-side route keeps key hidden)
     async function fetchETA() {
       try {
-        const url = `/api/eta?origin=${ORIGIN}&destination=${DESTINATION}`;
+        const url = `/api/eta?origin=${origin}&destination=${destination}`;
         const res = await fetch(url);
         const data = await res.json();
 
@@ -77,7 +136,7 @@ export default function UberTracker() {
     }
 
     fetchETA();
-  }, []);
+  }, [origin, destination]);
 
   return (
     <div className="mx-auto max-w-[390px] min-h-[780px] bg-white font-sans overflow-hidden shadow-xl border border-gray-100">
@@ -194,7 +253,7 @@ export default function UberTracker() {
       {/* Action Row */}
       <div className="flex gap-2.5 px-5 py-4 border-b-[8px] border-gray-50">
         <button className="w-11 h-11 shrink-0 rounded-full border border-gray-200 flex items-center justify-center bg-white">📞</button>
-        <button className="h-11 flex-1 rounded-full border border-gray-200 font-medium text-sm text-gray-900 bg-white">💬 Send a message</button>
+        <button onClick={sendGeoguesser} className="h-11 flex-1 rounded-full border border-gray-200 font-medium text-sm text-gray-900 bg-white">💬 Send a message</button>
         <button className="h-11 px-5 rounded-full border border-gray-200 font-medium text-sm text-gray-900 bg-white">⊕ Tip</button>
       </div>
 

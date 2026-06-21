@@ -71,9 +71,25 @@ export default function GuessDriver() {
                 // WIN CONDITION
                 if (current === currentTarget) {
                     setGameOver(true);
+                    let userLocation: string | null = null;
+                    const addressItem = localStorage.getItem("address");
+
+                    if (addressItem) {
+                        try {
+                            const parsedAddress = JSON.parse(addressItem) as { mine?: string | null };
+                            userLocation = parsedAddress?.mine ? String(parsedAddress.mine) : null;
+                        } catch (e) {
+                            console.error("Failed to parse address", e);
+                        }
+                    }
+                    // Safely parse address only if it exists to avoid passing null to JSON.parse
+                    const rawAddress = localStorage.getItem("address");
+                    console.log("user set ", rawAddress ? JSON.parse(rawAddress) : null);
+
                     ably.channels.get("online").publish("deliveryConfirmed", {
                         driverName: currentTarget,
                         status: "accepted",
+                        userLocation: userLocation,
                     });
                     router.push("/trackProgress");
                     return;
